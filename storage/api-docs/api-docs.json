@@ -1,0 +1,745 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "GameStore",
+        "version": "1.0"
+    },
+    "paths": {
+        "/api/auth/register": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "description": "Đăng ký tài khoản mới",
+                "operationId": "App\\Application\\Controllers\\AuthController::register",
+                "requestBody": {
+                    "description": "Dữ liệu tài khoản cần đăng ký",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Tài khoản đã được đăng ký thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Thông báo đăng ký thành công",
+                                            "type": "string"
+                                        },
+                                        "user": {
+                                            "$ref": "#/components/schemas/User"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Dữ liệu không hợp lệ"
+                    }
+                }
+            }
+        },
+        "/api/auth/login": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "description": "Đăng nhập vào tài khoản",
+                "operationId": "App\\Application\\Controllers\\AuthController::login",
+                "requestBody": {
+                    "description": "Dữ liệu đăng nhập",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "description": "Địa chỉ email của người dùng",
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "password": {
+                                        "description": "Mật khẩu của người dùng",
+                                        "type": "string",
+                                        "format": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Đăng nhập thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "access_token": {
+                                            "description": "JWT token cho việc xác thực",
+                                            "type": "string"
+                                        },
+                                        "token_type": {
+                                            "description": "Loại token",
+                                            "type": "string"
+                                        },
+                                        "expires_in": {
+                                            "description": "Thời gian sống của token (tính bằng giây)",
+                                            "type": "integer"
+                                        },
+                                        "user": {
+                                            "$ref": "#/components/schemas/User"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Email hoặc mật khẩu không đúng"
+                    }
+                }
+            }
+        },
+        "/api/auth/profile": {
+            "get": {
+                "tags": [
+                    "Authentication"
+                ],
+                "description": "Xem thông tin tài khoản của người dùng hiện tại",
+                "operationId": "App\\Application\\Controllers\\AuthController::profile",
+                "responses": {
+                    "200": {
+                        "description": "Thông tin tài khoản",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/auth/logout": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "description": "Đăng xuất tài khoản",
+                "operationId": "App\\Application\\Controllers\\AuthController::logout",
+                "responses": {
+                    "200": {
+                        "description": "Đăng xuất thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Thông báo đăng xuất thành công",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/game/search": {
+            "get": {
+                "tags": [
+                    "Game"
+                ],
+                "description": "Tìm kiếm trò chơi theo từ khóa hoặc giá từ một mức giá cụ thể",
+                "parameters": [
+                    {
+                        "name": "keyword",
+                        "in": "query",
+                        "description": "Từ khóa để tìm kiếm trò chơi",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "fromPrice",
+                        "in": "query",
+                        "description": "Giá tối thiểu để tìm kiếm trò chơi",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Danh sách trò chơi được tìm thấy",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Game"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Không tìm thấy trò chơi nào"
+                    }
+                }
+            }
+        },
+        "/api/game/favorate": {
+            "get": {
+                "tags": [
+                    "Game"
+                ],
+                "description": "Trả về top 5 các game được yêu thích",
+                "operationId": "App\\Application\\Controllers\\GameController::showFavorate",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "422": {
+                        "description": "Missing Data"
+                    }
+                }
+            }
+        },
+        "/api/game": {
+            "post": {
+                "tags": [
+                    "Game"
+                ],
+                "description": "Tạo mới một trò chơi",
+                "operationId": "App\\Application\\Controllers\\GameController::createGame",
+                "requestBody": {
+                    "description": "Dữ liệu trò chơi cần tạo",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/GameRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Trò chơi đã được tạo thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Thông báo thành công",
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Game"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Dữ liệu không hợp lệ"
+                    }
+                }
+            }
+        },
+        "/api/game/{id}": {
+            "delete": {
+                "tags": [
+                    "Game"
+                ],
+                "description": "Xóa một trò chơi",
+                "operationId": "App\\Application\\Controllers\\GameController::deleteGame",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID của trò chơi cần xóa",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Trò chơi đã được xóa thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Thông báo thành công",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Không tìm thấy trò chơi với ID đã cung cấp"
+                    }
+                }
+            }
+        },
+        "/api/genre": {
+            "get": {
+                "tags": [
+                    "Genre"
+                ],
+                "description": "Hiển thị tất cả các thể loại trò chơi",
+                "operationId": "App\\Application\\Controllers\\GenreController::showAllGenre",
+                "responses": {
+                    "200": {
+                        "description": "Danh sách các thể loại trò chơi được tìm thấy",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Genre"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Không tìm thấy bất kỳ thể loại trò chơi nào"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Genre"
+                ],
+                "description": "Tạo mới một thể loại game",
+                "operationId": "App\\Application\\Controllers\\GenreController::createGenre",
+                "requestBody": {
+                    "description": "Dữ liệu thể loại cần tạo",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "Tên của thể loại game",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Thể loại game đã được tạo thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Thông báo thành công",
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Genre"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Dữ liệu không hợp lệ"
+                    }
+                }
+            }
+        },
+        "/api/genre/detail/{id}": {
+            "get": {
+                "tags": [
+                    "Genre"
+                ],
+                "description": "Hiển thị thể loại của trò chơi với ID được cung cấp",
+                "operationId": "App\\Application\\Controllers\\GenreController::showGenreOfGameID",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID của trò chơi",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Thể loại của trò chơi được tìm thấy",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Genre"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Không tìm thấy thể loại của trò chơi"
+                    }
+                }
+            }
+        },
+        "/api/genre/{id}": {
+            "delete": {
+                "tags": [
+                    "Genre"
+                ],
+                "description": "Xóa thể loại trò chơi",
+                "operationId": "App\\Application\\Controllers\\GenreController::deleteGenre",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID của loại trò chơi cần xóa",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Thể loại đã được xóa thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Thông báo thành công",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Không tìm thấy thể loại với ID đã cung cấp"
+                    }
+                }
+            }
+        },
+        "/api/order/{id}": {
+            "get": {
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Hiển thị tất cả các đơn hàng của người dùng có ID",
+                "description": "Trả về tất cả các đơn hàng của người dùng có ID được cung cấp.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "ID của người dùng",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Danh sách đơn hàng của người dùng đó",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Order"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Không tìm thấy đơn hàng nào cho người dùng đã cung cấp"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "UserRequest": {
+                "required": [
+                    "email",
+                    "password"
+                ],
+                "properties": {
+                    "email": {
+                        "description": "Địa chỉ email của người dùng",
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "password": {
+                        "description": "Mật khẩu của người dùng",
+                        "type": "string",
+                        "format": "password"
+                    }
+                },
+                "type": "object"
+            },
+            "User": {
+                "required": [
+                    "id",
+                    "email",
+                    "created_at",
+                    "updated_at"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "ID của người dùng",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "email": {
+                        "description": "Địa chỉ email của người dùng",
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "created_at": {
+                        "description": "Thời điểm tạo tài khoản",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Thời điểm cập nhật tài khoản",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "Game": {
+                "required": [
+                    "id",
+                    "name",
+                    "description",
+                    "price",
+                    "image",
+                    "publisher_id",
+                    "like",
+                    "status"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "ID của trò chơi",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "name": {
+                        "description": "Tên của trò chơi",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "Mô tả của trò chơi",
+                        "type": "string"
+                    },
+                    "price": {
+                        "description": "Giá của trò chơi",
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "image": {
+                        "description": "Đường dẫn hình ảnh của trò chơi",
+                        "type": "string"
+                    },
+                    "publisher_id": {
+                        "description": "ID của nhà xuất bản",
+                        "type": "integer"
+                    },
+                    "like": {
+                        "description": "Số lượt thích của trò chơi",
+                        "type": "integer"
+                    },
+                    "status": {
+                        "description": "Trạng thái của trò chơi",
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "description": "Thời điểm tạo bản ghi",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Thời điểm cập nhật bản ghi",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "GameRequest": {
+                "required": [
+                    "name",
+                    "description",
+                    "price",
+                    "image",
+                    "publisher_id",
+                    "like",
+                    "status"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "Tên của trò chơi",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "Mô tả của trò chơi",
+                        "type": "string"
+                    },
+                    "price": {
+                        "description": "Giá của trò chơi",
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "image": {
+                        "description": "Đường dẫn hình ảnh của trò chơi",
+                        "type": "string"
+                    },
+                    "publisher_id": {
+                        "description": "ID của nhà xuất bản",
+                        "type": "integer"
+                    },
+                    "like": {
+                        "description": "Số lượt thích của trò chơi",
+                        "type": "integer"
+                    },
+                    "status": {
+                        "description": "Trạng thái của trò chơi",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Genre": {
+                "required": [
+                    "name"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "Tên của thể loại game",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Order": {
+                "title": "Order",
+                "required": [
+                    "id",
+                    "user_id",
+                    "total",
+                    "order_status",
+                    "pay_type",
+                    "order_id_ref",
+                    "created_at",
+                    "updated_at"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "ID của đơn hàng",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "user_id": {
+                        "description": "ID của người dùng",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "total": {
+                        "description": "Tổng giá trị của đơn hàng",
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "order_status": {
+                        "description": "Trạng thái của đơn hàng",
+                        "type": "string"
+                    },
+                    "pay_type": {
+                        "description": "Ngân hàng thanh toán",
+                        "type": "string"
+                    },
+                    "order_id_ref": {
+                        "description": "Mã đơn hàng",
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "description": "Thời điểm tạo đơn hàng",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Thời điểm cập nhật đơn hàng",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    }
+}

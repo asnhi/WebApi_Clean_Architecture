@@ -1,0 +1,17 @@
+{
+    "games": [
+        {
+          "id": 22,
+          "name": "Gunvolt Chronicles: Luminous Avenger iX",
+          "description": "Experience the apeX of 2D action! A new era of 2D action begins now! Get ready for high-speed, stylish 2D side-scrolling action like never before. Inti Creates presents the ultimate in classic 2D action with \"Luminous Avenger iX\"!",
+          "price": 165000
+        },
+        {
+          "id": 19,
+          "name": "Dying Light",
+          "description": "First-person action survival game set in a post-apocalyptic open world overrun by flesh-hungry zombies. Roam a city devastated by a mysterious virus epidemic. Scavenge for supplies, craft weapons, and face hordes of the infected.",
+          "price": 329000
+          
+        }
+      ]
+}

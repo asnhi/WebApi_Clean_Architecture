@@ -1,0 +1,82 @@
+<!-- Navbar -->
+<nav class="shadow sticky-top navbar navbar-expand-lg navbar-dark bg-navbar-dark">
+    <!-- Container wrapper -->
+    <div class="container-fluid">
+        <!-- Navbar brand -->
+        <a class="navbar-brand" href="index.html">GAMESTORE</a>
+
+        <!-- Toggle button -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <i class="fas fa-bars text-light"></i>
+        </button>
+
+
+        <!-- Collapsible wrapper -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <!-- Left links -->
+            <ul class="navbar-nav me-auto d-flex flex-row mt-3 mt-lg-0">
+                <li class="nav-item text-center mx-2 mx-lg-1">
+                    <a href="index.html" class="nav-link" aria-current="page" href="#!">
+                        <div>
+                            <i class="fas fa-home fa-lg mb-1"></i>
+                        </div>
+                        Trang Chủ
+                    </a>
+                    
+            </ul>
+            <!-- Left links -->
+
+            <!-- Right links -->
+            <ul class="navbar-nav ms-auto d-flex flex-row mt-3 mt-lg-0">
+                <li class="nav-item dropdown text-center mx-2 mx-lg-1">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <div>
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                        Tài Khoản
+                    </a>
+                    <!-- Dropdown menu -->
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
+                        <li>
+                            <a class="dropdown-item" href="/resources/TemplateWeb/login.html">
+                                Đăng nhập
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ route('signup') }}">
+                                Đăng ký
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item text-center mx-2 mx-lg-1">
+                    <a class="nav-link" aria-current="page" href="cart.html">
+                        <div>
+                            <i class="fa-solid fa-cart-shopping"></i>
+                            <span class="badge rounded-pill badge-notification bg-info">
+                                0
+                            </span>
+                        </div>
+                        Giỏ Hàng
+                    </a>
+                </li>
+            </ul>
+            <!-- Right links -->
+
+            <!-- Search form -->
+            <form action="search.html" method="GET" class="d-flex input-group w-auto ms-lg-3 my-3 my-lg-0">
+                <input type="search" name="q" class="form-control" placeholder="Tìm kiếm sản phẩm"
+                    aria-label="Search" />
+                <button class="btn btn-primary" data-bs-ripple-color="dark">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </form>
+        </div>
+        <!-- Collapsible wrapper -->
+    </div>
+    <!-- Container wrapper -->
+</nav>
+<!-- Navbar -->

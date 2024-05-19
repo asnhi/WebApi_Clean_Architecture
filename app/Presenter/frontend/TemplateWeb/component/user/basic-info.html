@@ -1,0 +1,86 @@
+<!-- thông tin cơ bản -->
+<div class="tab-pane text-white fade show active" id="account" role="tabpanel">
+    <div class="card border-secondary bg-navbar-dark info">
+        <div class="card-header border-secondary bg-navbar-dark">
+            <div class="card-actions float-right">
+            </div>
+            <h5 class="card-title mb-0">Thông tin cơ bản</h5>
+        </div>
+        <div class="card-body">
+            <form method="post" action="http://127.0.0.1:8000/user/edit"
+                enctype="multipart/form-data">
+                <input type="hidden" name="_token" value="i7Mf2pkxRgNzphbjQAd6jSNxpgEV5QMDWZcQoZ7V">
+                <input name="form" type="text" value="1" hidden />
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="name">Tên người dùng</label>
+                            <input name="name" type="text"
+                                class="form-control border-secondary bg-navbar-dark text-white"
+                                id="name" placeholder="Tên người dùng" value="user" />
+                        </div>
+
+                        <div class="form-group pt-2">
+                            <label for="bio">Ghi chú</label>
+                            <textarea name="bio" rows="4"
+                                class="form-control border-secondary bg-navbar-dark text-white"
+                                id="bio" placeholder="Mô tả ngắn gọn về bạn">
+
+        </textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-2">
+                    <button type="submit" class="btn btn-default">
+                        Lưu thay đổi
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card border-secondary bg-navbar-dark info">
+        <div class="card-header border-secondary bg-navbar-dark">
+            <div class="card-actions float-right">
+            </div>
+            <h5 class="card-title mb-0">
+                Thông tin khác
+            </h5>
+        </div>
+        <div class="card-body">
+            <form method="post" action="http://127.0.0.1:8000/user/edit"
+                enctype="multipart/form-data">
+                <input type="hidden" name="_token" value="i7Mf2pkxRgNzphbjQAd6jSNxpgEV5QMDWZcQoZ7V">
+                <input name="form" type="text" value="2" hidden />
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input readonly name="email" type="email"
+                        class="form-control border-secondary bg-navbar-dark text-white" id="email"
+                        placeholder="Nhập email" value=" user@gmail.com" />
+                </div>
+                <div class="form-group pt-2">
+                    <label for="gender">Giới tính</label>
+                    <select id="gender" name="gender"
+                        class="form-select border-secondary mb-3 bg-navbar-dark text-white">
+                        <option value="Male" selected>Nam</option>
+                        <option value="Female">Nữ</option>
+                        <option value="Other">Khác</option>
+                    </select>
+                </div>
+                <div class="form-group pt-2">
+                    <label for="address">Địa chỉ</label>
+                    <input value="" name="address" type="text"
+                        class="form-control border-secondary bg-navbar-dark text-white" id="address"
+                        placeholder="Nhập địa chỉ" />
+                </div>
+                <div class="form-group pt-2">
+                    <button type="submit" class="btn btn-default">
+                        Lưu thay đổi
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- thông tin cơ bản -->

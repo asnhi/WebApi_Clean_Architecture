@@ -1,0 +1,859 @@
+<div>
+    <!-- The whole future lies in uncertainty: live immediately. - Seneca -->
+</div>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+<link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.css" integrity="sha512-oe8OpYjBaDWPt2VmSFR+qYOdnTjeV9QPLJUeqZyprDEQvQLJ9C5PCFclxwNuvb/GQgQngdCXzKSFltuHD3eCxA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker.min.css" integrity="sha512-34s5cpvaNG3BknEWSuOncX28vz97bRI59UnVtEEpFX536A7BtZSJHsDyFoCl8S7Dt2TPzcrCEoHBGeM4SUBDBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+<script src="https://kit.fontawesome.com/ee39434323.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-element-bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js" integrity="sha512-LsnSViqQyaXpD4mBBdRYeP6sRwJiJveh2ZIbW41EBrNmKxgr/LFZIiWT6yr+nycvhvauz8c2nYMhrP80YhG7Cw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<link rel="stylesheet" href="http://127.0.0.1:8000/css/style.css">    <link rel="stylesheet" href="http://127.0.0.1:8000/css/admin.style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.css"
+        integrity="sha512-oe8OpYjBaDWPt2VmSFR+qYOdnTjeV9QPLJUeqZyprDEQvQLJ9C5PCFclxwNuvb/GQgQngdCXzKSFltuHD3eCxA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+<script type="text/javascript" class="flasher-js">(function() {    var rootScript = 'https://cdn.jsdelivr.net/npm/@flasher/flasher@1.3.1/dist/flasher.min.js';    var FLASHER_FLASH_BAG_PLACE_HOLDER = {};    var options = mergeOptions([], FLASHER_FLASH_BAG_PLACE_HOLDER);    function mergeOptions(first, second) {        return {            context: merge(first.context || {}, second.context || {}),            envelopes: merge(first.envelopes || [], second.envelopes || []),            options: merge(first.options || {}, second.options || {}),            scripts: merge(first.scripts || [], second.scripts || []),            styles: merge(first.styles || [], second.styles || []),        };    }    function merge(first, second) {        if (Array.isArray(first) && Array.isArray(second)) {            return first.concat(second).filter(function(item, index, array) {                return array.indexOf(item) === index;            });        }        return Object.assign({}, first, second);    }    function renderOptions(options) {        if(!window.hasOwnProperty('flasher')) {            console.error('Flasher is not loaded');            return;        }        requestAnimationFrame(function () {            window.flasher.render(options);        });    }    function render(options) {        if ('loading' !== document.readyState) {            renderOptions(options);            return;        }        document.addEventListener('DOMContentLoaded', function() {            renderOptions(options);        });    }    if (1 === document.querySelectorAll('script.flasher-js').length) {        document.addEventListener('flasher:render', function (event) {            render(event.detail);        });    }    if (window.hasOwnProperty('flasher') || !rootScript || document.querySelector('script[src="' + rootScript + '"]')) {        render(options);    } else {        var tag = document.createElement('script');        tag.setAttribute('src', rootScript);        tag.setAttribute('type', 'text/javascript');        tag.onload = function () {            render(options);        };        document.head.appendChild(tag);    }})();</script>
+</head>
+
+<body>
+
+    <title>Key</title>
+    <!-- Navbar -->
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+        <!-- Navbar Brand-->
+        <a class="navbar-brand ps-3" href="http://127.0.0.1:8000">GameStore</a>
+        <!-- Sidebar Toggle-->
+        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
+                class="fas fa-bars"></i></button>
+        <!-- Navbar Search-->
+        <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+            <div class="input-group">
+                <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..."
+                    aria-describedby="btnNavbarSearch" />
+                <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i
+                        class="fas fa-search"></i></button>
+            </div>
+        </form>
+        <!-- Navbar-->
+        <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+            <li class="nav-item dropdown">
+                <a class="nav-link" id="navbarDropdown" href="#" role="button"
+                    data-bs-toggle="dropdown" aria-expanded="false">&nbsp;</a>
+                
+            </li>
+        </ul>
+    </nav>
+    <!-- Navbar -->
+
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+    <div class="sb-sidenav-menu">
+        <div class="nav">
+            <div class="sb-sidenav-menu-heading">Core</div>
+            <a class="nav-link" href="http://127.0.0.1:8000/admin/dashboard">
+                <div class="sb-nav-link-icon"><i class="fa-solid fa-chart-line"></i></div>
+                Dashboard
+            </a>
+            <div class="sb-sidenav-menu-heading">Interface</div>
+            <a class="nav-link" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts"
+                aria-expanded="false" aria-controls="collapseLayouts">
+                <div class="sb-nav-link-icon"><i class="fa-solid fa-user"></i></div>
+                User Manage
+                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+            </a>
+            <div class="collapse show" id="collapseLayouts" aria-labelledby="headingOne"
+                data-bs-parent="#sidenavAccordion">
+                <nav class="sb-sidenav-menu-nested nav">
+                    <a class="nav-link" href="http://127.0.0.1:8000/admin/user"><i class="fa-solid fa-user-group"></i>&nbsp;
+                        Users</a>
+                    <a class="nav-link" href="http://127.0.0.1:8000/admin/permission"><i
+                            class="fa-solid fa-user-shield"></i>&nbsp;
+                        Permissions</a>
+                    <a class="nav-link" href="http://127.0.0.1:8000/admin/role"><i class="fa-solid fa-tag"></i>&nbsp;
+                        Roles</a>
+                </nav>
+            </div>
+            <a class="nav-link" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages"
+                aria-expanded="false" aria-controls="collapsePages">
+                <div class="sb-nav-link-icon"><i class="fa-solid fa-gamepad"></i></div>
+                Games
+                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+            </a>
+            <div class="collapse show" id="collapsePages" aria-labelledby="headingTwo"
+                data-bs-parent="#sidenavAccordion">
+                <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+                    <a class="nav-link" href="http://127.0.0.1:8000/admin/game"><i class="fa-solid fa-gamepad"></i>&nbsp;
+                        Games </a>
+                    <a class="nav-link" href="http://127.0.0.1:8000/admin/genre"><i class="fa-solid fa-tags"></i>&nbsp;
+                        Genres</a>
+                    <a class="nav-link" href="http://127.0.0.1:8000/admin/publisher"><i class="fa-solid fa-user-tie"></i>&nbsp;
+                        Publishers</a>
+                    <a class="nav-link" href="http://127.0.0.1:8000/admin/key"><i class="fa-solid fa-key"></i>&nbsp;
+                        Keys</a>
+                    <!-- <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
+                                    Authentication
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="login.html">Login</a>
+                                        <a class="nav-link" href="register.html">Register</a>
+                                        <a class="nav-link" href="password.html">Forgot Password</a>
+                                    </nav>
+                                </div>
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">
+                                    Error
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="401.html">401 Page</a>
+                                        <a class="nav-link" href="404.html">404 Page</a>
+                                        <a class="nav-link" href="500.html">500 Page</a>
+                                    </nav>
+                                </div> -->
+                </nav>
+            </div>
+            <div class="sb-sidenav-menu-heading">Orders</div>
+            <a class="nav-link" href="http://127.0.0.1:8000/admin/order">
+                <div class="sb-nav-link-icon"><i class="fa-solid fa-receipt"></i></div>
+                Orders
+            </a>
+            <a class="nav-link" href="http://127.0.0.1:8000/admin/order/detail">
+                <div class="sb-nav-link-icon"><i class="fa-solid fa-circle-info"></i></div>
+                Orders Detail
+            </a>
+            <div class="sb-sidenav-menu-heading">Auth</div>
+            <div class="btn-group dropend">
+                <a type="button" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    <div class="sb-nav-link-icon"><i class="fa-solid fa-user"></i></div>
+                    admin
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="http://127.0.0.1:8000/admin/info">Cài đặt tài khoản</a></li>
+                    <li><a class="dropdown-item" href="http://127.0.0.1:8000/admin/logoutAdmin">Đăng xuất</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="sb-sidenav-footer">
+        <div class="text-muted">Copyright &copy; GameStore 2023</div>
+    </div>
+</nav>
+        </div>
+        <!--Vi tri content margin-left: 20px !important -->
+
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container-fluid px-4">
+                    <div class="text-center">
+                                            </div>
+                    <div class="text-center">
+                                            </div>
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-table me-1"></i>
+                            Keys
+                        </div>
+                        <div class="card-body">
+
+                            <div class="pb-3">
+                                <button type="button" class="text-white btn btn-default btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#addKey">
+                                    <i class="fa-solid fa-plus"></i> Thêm key
+                                </button>
+                            </div>
+
+                            <table id="datatablesSimple">
+                                <thead>
+                                    <tr>
+                                        <th scope="row">Key</th>
+                                        <th scope="row">Game</th>
+                                        <th scope="row">Status</th>
+                                        <th scope="row">Expire Date</th>
+                                        <th scope="row" data-sortable="false"></th>
+                                        <th scope="row" data-sortable="false"></th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th scope="row">Key</th>
+                                        <th scope="row">Game</th>
+                                        <th scope="row">Status</th>
+                                        <th scope="row">Expire Date</th>
+                                        <th scope="row" data-sortable="false"></th>
+                                        <th scope="row" data-sortable="false"></th>
+                                        
+                                    </tr>
+                                </tfoot>
+                                <tbody class="table-border-bottom-0">
+                                                                            <tr>
+                                            <td>WLJC4-BAYSA-N6RI9-DOTWI-WGRK9-VFGGJ-0GZF0-3FXWQ</td>
+                                            <td>Bloons TD 5</td>
+                                                                                            <td>Chưa bán</td>
+                                                                                                                                        <td>Không có</td>
+                                                                                        <td>
+                                                <button type="button" class="text-white btn btn-default btn-sm"
+                                                    data-bs-toggle="modal" data-bs-target="#key_1">
+                                                    <i class="fas fa-info me-2"></i> Sửa
+                                                </button>
+
+                                                <div class="modal fade" id="key_1" tabindex="-1"
+                                                    aria-labelledby="userDetailModal" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header border-bottom-0">
+                                                                <p class="h3 mb-0" style="color: #35558a;">
+                                                                    Sửa key
+                                                                </p>
+                                                                <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body text-start text-black p-4">
+                                                                <div class="mb-3">
+                                                                    <form class="editKey" method="POST"
+                                                                        action="http://127.0.0.1:8000/admin/key/update/1">
+                                                                        <input type="hidden" name="_token" value="POKPwrnxPx4xjKjztiuUT8JYUCLhJhkrL8xsqYw2">                                                                        <input type="hidden" name="_method" value="put">                                                                        <div class="row">
+                                                                            <label class="col-sm-2 col-md-3 form-label"
+                                                                                for="key">Key</label>
+                                                                            <div class="col-sm-10 col-md-9">
+                                                                                <input
+                                                                                    value="WLJC4-BAYSA-N6RI9-DOTWI-WGRK9-VFGGJ-0GZF0-3FXWQ"
+                                                                                    type="text" class="form-control"
+                                                                                    id="key" name="key" />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row pt-2">
+                                                                            <label class="col-sm-2 col-md-3 form-label"
+                                                                                for="expiredate">Ngày hết
+                                                                                hạn</label>
+                                                                            <div class="col-sm-10 col-md-9">
+                                                                                <input class="date form-control"
+                                                                                    name="expiredate" type="text">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row pt-2">
+                                                                            <div class="col-md-10">
+                                                                            </div>
+                                                                            <div
+                                                                                class="col-md-2 d-flex justify-content-end">
+                                                                                <button type="submit"
+                                                                                    class="btn btn-primary">Cập
+                                                                                    nhật</button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <button type="button" class="text-white btn btn-danger"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#deleteKey1">
+                                                    <i class="fa-solid fa-trash-can"></i> Xóa
+                                                </button>
+
+                                                <div class="modal" id="deleteKey1"
+                                                    tabindex="-1">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+
+                                                            <form method="post"
+                                                                action="http://127.0.0.1:8000/admin/key/delete/1">
+                                                                <input type="hidden" name="_token" value="POKPwrnxPx4xjKjztiuUT8JYUCLhJhkrL8xsqYw2">                                                                <input type="hidden" name="_method" value="delete"><div class="modal-header">
+                                                                    <h5 class="modal-title">Xóa key
+                                                                    </h5>
+                                                                    <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <p>Bạn có chắc muốn xóa key này?
+                                                                    </p>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button class="btn btn-danger">Xóa</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+    
+    
+    
+    
+                <div class="modal fade" id="addKey" tabindex="-1" aria-labelledby="addRoleModal"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header border-bottom-0">
+                                <p class="h3 mb-0" style="color: #35558a;">
+                                    Thêm key
+                                </p>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body text-start text-black p-4">
+                                <div class="mb-3">
+                                    <!-- Tabs navs -->
+                                    <ul class="nav nav-tabs nav-justified mb-3" id="ex1" role="tablist">
+                                        <li class="nav-item" role="presentation">
+                                            <a class="nav-link active" id="ex3-tab-1" data-bs-toggle="tab"
+                                                href="#ex3-tabs-1" role="tab" aria-controls="ex3-tabs-1"
+                                                aria-selected="true">Thêm 1 key</a>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <a class="nav-link" id="ex3-tab-2" data-bs-toggle="tab" href="#ex3-tabs-2"
+                                                role="tab" aria-controls="ex3-tabs-2" aria-selected="false">Thêm bằng
+                                                file (.CSV)</a>
+                                        </li>
+                                    </ul>
+                                    <!-- Tabs navs -->
+    
+    
+                                    <!-- Tabs content -->
+                                    <div class="tab-content" id="ex2-content">
+                                        <div class="tab-pane fade show active" id="ex3-tabs-1" role="tabpanel"
+                                            aria-labelledby="ex3-tab-1">
+                                            <form id="addKeySingle" method="POST" action="http://127.0.0.1:8000/admin/key/store">
+                                                <div class="text-sm">
+                                                    <small class="text-secondary">The format should be one of
+                                                        these:</small><br>
+                                                    <small class="text-secondary">
+                                                        AAAAA-BBBBB-CCCCC-DDDDD-EEEEE
+                                                    </small><br>
+                                                    <small class="text-secondary">
+                                                        AAAAA-BBBBB-CCCCC-AAAAA-BBBBB-CCCCC-DDDDD-EEEEE
+                                                    </small>
+                                                </div>
+                                                <br>
+                                                <input type="hidden" name="_token" value="POKPwrnxPx4xjKjztiuUT8JYUCLhJhkrL8xsqYw2">                                            <div class="row">
+                                                    <label class="col-sm-2 col-md-3 form-label" for="cd_key">Key</label>
+                                                    <div class="col-sm-10 col-md-9">
+                                                        <input value="" type="text" class="form-control"
+                                                            id="cd_key" name="cd_key" />
+                                                    </div>
+                                                </div>
+                                                <div class="row pt-2">
+                                                    <label class="col-sm-2 col-md-3 form-label"
+                                                        for="game_id">Game</label>
+                                                    <div class="col-sm-10 col-md-9">
+                                                        <select class="form-select" id="pub_id" name="game_id"
+                                                            aria-label="Default select example">
+                                                                                                                        <option class="form-contorl" value="1">
+                                                                    Bloons TD 5
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="2">
+                                                                    Bloons TD 6
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="3">
+                                                                    Cyberpunk 2077
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="4">
+                                                                    Don&#039;t Starve Together
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="5">
+                                                                    ELDEN RING
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="6">
+                                                                    Azure Striker Gunvolt
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="7">
+                                                                    Azure Striker Gunvolt 2
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="8">
+                                                                    Azure Striker Gunvolt 3
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="9">
+                                                                    Hades
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="10">
+                                                                    Left 4 Dead 2
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="11">
+                                                                    Mega Man 11
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="12">
+                                                                    Persona 5 Royal
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="13">
+                                                                    Plants vs. Zombies GOTY Edition
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="14">
+                                                                    Starbound
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="15">
+                                                                    Stardew Valley
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="16">
+                                                                    Stray
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="17">
+                                                                    Terraria
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="18">
+                                                                    Undertale
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="19">
+                                                                    Valiant Hearts: The Great War™
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="20">
+                                                                    Mega Man X Legacy Collection
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="21">
+                                                                    Mega Man X Legacy Collection 2
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="22">
+                                                                    Mega Man Zero/ZX Legacy Collection
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="23">
+                                                                    Mega Man Legacy Collection
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="24">
+                                                                    Mega Man Legacy Collection 2
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="25">
+                                                                    Dead by Daylight
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="26">
+                                                                    Jump King
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="27">
+                                                                    To the Moon
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="28">
+                                                                    UDONGEIN X
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="29">
+                                                                    A Dance of Fire and Ice
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="30">
+                                                                    Dying Light
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="31">
+                                                                    Mad Father
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="32">
+                                                                    Angels of Death
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="33">
+                                                                    Blaster Master Zero
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="34">
+                                                                    Blaster Master Zero 2
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="35">
+                                                                    Blaster Master Zero 3
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="36">
+                                                                    Necesse
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="37">
+                                                                    OneShot
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="38">
+                                                                    Impostor Factory
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="39">
+                                                                    20XX
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="40">
+                                                                    30XX
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="41">
+                                                                    Gunvolt Chronicles: Luminous Avenger iX
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="42">
+                                                                    Gunvolt Chronicles: Luminous Avenger iX 2
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="43">
+                                                                    Dead Cells
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="44">
+                                                                    The Death | Thần Trùng
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="45">
+                                                                    The Forest of Drizzling Rain
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="46">
+                                                                    Forager
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="47">
+                                                                    One Step From Eden
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="48">
+                                                                    OMORI
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="49">
+                                                                    Katana ZERO
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="50">
+                                                                    Core Keeper
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="51">
+                                                                    ENDER LILIES: Quietus of the Knights
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="52">
+                                                                    Pocket Mirror ~ GoldenerTraum
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="53">
+                                                                    Street Fighter™ 6
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="54">
+                                                                    Grounded
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="55">
+                                                                    Call of Duty®: Modern Warfare®
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="56">
+                                                                    Call of Duty®: Modern Warfare® II
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="57">
+                                                                    Oblivion Override
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="58">
+                                                                    The Forest
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="59">
+                                                                    Sons Of The Forest
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="60">
+                                                                    Hogwarts Legacy
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="61">
+                                                                    Rust
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="62">
+                                                                    MONSTER HUNTER RISE
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="63">
+                                                                    Monster Hunter: World
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="64">
+                                                                    PowerWash Simulator
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="65">
+                                                                    Phasmophobia
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="66">
+                                                                    Project Zomboid
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="67">
+                                                                    Sea of Thieves 2023 Edition
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="68">
+                                                                    Devil May Cry 5
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="69">
+                                                                    Lobotomy Corporation | Monster Management Simulation
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="70">
+                                                                    Library Of Ruina
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="71">
+                                                                    Garry&#039;s Mod
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="72">
+                                                                    DREDGE
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="73">
+                                                                    Among Us
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="74">
+                                                                    Dragon Marked For Death
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="75">
+                                                                    Darkest Dungeon®
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="76">
+                                                                    Darkest Dungeon® II
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="77">
+                                                                    Pizza Tower
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="78">
+                                                                    DARK SOULS™: REMASTERED
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="79">
+                                                                    DARK SOULS™ II
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="80">
+                                                                    DARK SOULS™ III
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="81">
+                                                                    Borderlands Game of the Year
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="82">
+                                                                    Borderlands 2
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="83">
+                                                                    Borderlands 3
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="84">
+                                                                    Hollow Knight
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="85">
+                                                                    Shovel Knight: Treasure Trove
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="86">
+                                                                    Shovel Knight: King of Cards
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="87">
+                                                                    Shovel Knight: Specter of Torment
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="88">
+                                                                    Shovel Knight: Shovel of Hope
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="89">
+                                                                    Cuphead
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="90">
+                                                                    Vampire Survivors
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="91">
+                                                                    Noita
+                                                                </option>
+                                                                                                                        <option class="form-contorl" value="92">
+                                                                    Cult of the Lamb
+                                                                </option>
+                                                                                                                </select>
+                                                    </div>
+                                                </div>
+                                                <div class="row pt-2">
+                                                    <label class="col-sm-2 col-md-3 form-label" for="expiredate">Ngày hết
+                                                        hạn</label>
+                                                    <div class="col-sm-10 col-md-9">
+                                                        <input class="date form-control" id="expiredate"
+                                                            name="expiredate" type="text">
+                                                    </div>
+                                                </div>
+                                                <div class="row pt-2">
+                                                    <div class="col-md-10">
+                                                    </div>
+                                                    <div class="col-md-2 d-flex justify-content-end">
+                                                        <button type="submit" class="btn btn-primary">
+                                                            Thêm
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="tab-pane fade" id="ex3-tabs-2" role="tabpanel"
+                                            aria-labelledby="ex3-tab-2">
+    
+                                            <form id="addKeyFile" method="POST" action="http://127.0.0.1:8000/admin/key/store"
+                                                enctype="multipart/form-data">
+                                                <input type="hidden" name="_token" value="POKPwrnxPx4xjKjztiuUT8JYUCLhJhkrL8xsqYw2">                                            <div class="row pt-2">
+                                                    <label class="col-sm-2 col-md-2 form-label" for="cd_key">Key
+                                                        File</label>
+                                                    <div class="col-sm-10 col-md-10">
+                                                        <input type="file" class="form-control" id="csv_file"
+                                                            name="csv_file">
+                                                        <small class="text-secondary">
+                                                            Accepted file extension: .csv, .txt
+                                                        </small><br>
+                                                        <small class="text-secondary">
+                                                            Format: cd_key,game_id,expire_date
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                                <div class="row pt-2">
+                                                    <div class="col-md-10">
+                                                    </div>
+                                                    <div class="col-md-2 d-flex justify-content-end">
+                                                        <button type="submit" class="btn btn-primary">
+                                                            Thêm
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <!-- Tabs content -->
+                                </div>
+    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <script>
+                window.addEventListener('DOMContentLoaded', event => {
+    
+                    // Toggle the side navigation
+                    const sidebarToggle = document.body.querySelector('#sidebarToggle');
+                    if (sidebarToggle) {
+                        // Uncomment Below to persist sidebar toggle between refreshes
+                        // if (localStorage.getItem('sb|sidebar-toggle') === 'true') {
+                        //     document.body.classList.toggle('sb-sidenav-toggled');
+                        // }
+                        sidebarToggle.addEventListener('click', event => {
+                            event.preventDefault();
+                            document.body.classList.toggle('sb-sidenav-toggled');
+                            localStorage.setItem('sb|sidebar-toggle', document.body.classList.contains(
+                                'sb-sidenav-toggled'));
+                        });
+                    }
+    
+                });
+    
+                window.addEventListener('DOMContentLoaded', event => {
+                    // Simple-DataTables
+                    // https://github.com/fiduswriter/Simple-DataTables/wiki
+    
+                    const datatablesSimple = document.getElementById('datatablesSimple');
+                    if (datatablesSimple) {
+                        new simpleDatatables.DataTable(datatablesSimple);
+                    }
+                });
+    
+                $('.date').datepicker({
+                    format: 'mm-dd-yyyy'
+                });
+    
+                $(document).ready(function() {
+                    $.validator.addMethod("date", function(value, element) {
+                        // Check if the input is empty
+                        if (value === '') {
+                            return true; // Allow empty value
+                        }
+    
+                        // Validate the date format
+                        if (!/^\d{2}-\d{2}-\d{4}$/.test(value)) {
+                            return false;
+                        }
+    
+                        // Extract the day, month, and year values
+                        let parts = value.split('-');
+                        let day = parseInt(parts[0], 10);
+                        let month = parseInt(parts[1], 10);
+                        let year = parseInt(parts[2], 10);
+    
+                        // Check if the date is valid
+                        let date = new Date(year, month - 1, day);
+                        return date.getDate() === day && date.getMonth() === month - 1 && date.getFullYear() ===
+                            year;
+                    }, "Định dạng ngày tháng ko hợp lệ (dd-mm-yyyy)");
+    
+                    $.validator.addMethod('keyFormat', function(value, element) {
+                        let key1Regex =
+                            /^[A-Z0-9]{5}-[A-Z0-9]{5}-[A-Z0-9]{5}-[A-Z0-9]{5}-[A-Z0-9]{5}-[A-Z0-9]{5}-[A-Z0-9]{5}-[A-Z0-9]{5}$/;
+                        let key2Regex = /^[A-Z0-9]{5}-[A-Z0-9]{5}-[A-Z0-9]{5}-[A-Z0-9]{5}-[A-Z0-9]{5}$/;
+    
+                        return this.optional(element) || key1Regex.test(value) || key2Regex.test(value);
+                    }, 'Định dạng key không hợp lệ');
+    
+                    $('#addKeySingle').validate({
+                        rules: {
+                            cd_key: {
+                                required: true,
+                                keyFormat: true
+                            },
+                            game_id: {
+                                required: true
+                            },
+                            expiredate: {
+                                date: true
+                            }
+                        },
+                        messages: {
+                            cd_key: {
+                                required: 'Thiếu key!',
+                            },
+                            game_id: {
+                                required: 'Thiếu game'
+                            },
+                            expiredate: {
+                                date: 'Định dạng ngày tháng không hợp lệ (dd-mm-yyyy)'
+                            }
+                        },
+                        errorPlacement: function(error, element) {
+                            error.appendTo(element.parent());
+                        }
+                    });
+    
+                    $('#addKeyFile').validate({
+                        rules: {
+                            csv_file: {
+                                required: true,
+                                extension: 'csv|txt',
+                            }
+                        },
+                        messages: {
+                            csv_file: {
+                                required: 'Thiếu file!',
+                                extension: 'Định dạng không hợp lệ!',
+                            }
+                        },
+                        errorPlacement: function(error, element) {
+                            error.appendTo(element.parent());
+                        }
+                    });
+    
+                    $('.editKey').each(function() {
+                        $(this).validate({
+                            rules: {
+                                key: {
+                                    required: true,
+                                    keyFormat: true
+                                },
+                                expiredate: {
+                                    date: true
+                                }
+                            },
+                            messages: {
+                                key: {
+                                    required: 'Thiếu key',
+                                }
+                            },
+                            errorPlacement: function(error, element) {
+                                error.appendTo(element.parent());
+                            },
+                            onfocusout: function(element) {
+                                this.element(element);
+                            }
+                        });
+                    });
+    
+                    $('#cd_key').on('blur', function() {
+                        $(this).valid(); // Trigger validation on blur event
+                    });
+                });
+            </script>
+    </body>
+    
+    </html>
