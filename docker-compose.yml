@@ -1,0 +1,27 @@
+version: '4.28' # docker version
+services: 
+  www: 
+    image: php:8.1.10-apache 
+    build: .
+    volumes:
+      - "./:/var/www/html" # Mount toàn bộ ứng dụng Laravel vào container
+    working_dir: /var/www/html # Thiết lập thư mục làm việc của Apache
+    ports:
+      - "8000:80"
+  
+  db: 
+    image: mysql:latest 
+    environment: 
+      - MYSQL_DATABASE=gamestore_api 
+      - MYSQL_USER=php_docker 
+      - MYSQL_PASSWORD=password 
+      - MYSQL_ALLOW_EMPTY_PASSWORD=1 
+    volumes:
+      - "./database:/docker-entrypoint-initdb.d"
+  phpmyadmin: 
+    image: phpmyadmin/phpmyadmin 
+    ports:
+      - "8080:80"
+    environment: 
+      - PMA_HOST=db 
+      - PMA_PORT=3306 
