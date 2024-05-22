@@ -16,31 +16,22 @@ use App\Application\Controllers\GameController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-Route::group(['middleware'=>'api', 'prefix'=>'auth'], function($route){
-    Route::post('/register', [AuthController::class, 'register']);
-    Route::post('/login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+Route::group(['middleware' => 'jwt.verify'], function() {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+    
     Route::get('/profile', [AuthController::class, 'profile']);
     Route::post('/logout', [AuthController::class, 'logout']);
+    // Các route khác cần xác thực JWT
 });
 
-// Route::middleware('api')->group(function () {
-//     $routes = glob(__DIR__ . "/api/*.php");
-//     foreach ($routes as $route) {
-//         require($route);
-//     }
-// });
 Route::middleware('api')->group(function () {
-    Route::prefix('game')->group(function () {
-        // Route::get('', [GameController::class, 'handle']);
-    
-        Route::get('favorate', [GameController::class, 'showFavorate']);
-        Route::get('search', [GameController::class, 'showSearch']);
-        
-        Route::post('', [GameController::class, 'createGame']);
-        Route::delete('{id}', [GameController::class, 'deleteGame']); 
-    });
+    $routes = glob(__DIR__ . "/api/*.php");
+    foreach ($routes as $route) {
+        require($route);
+    }
 });
+
