@@ -21,7 +21,7 @@ class Order extends Model
         'VNPAY'
     ];
 
-    public $timestamps = false;
+    public $timestamps = true;
     protected $fillable = [
         'user_id', 'total', 'order_status', 'pay_type', 'order_id_ref',
     ];

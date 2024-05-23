@@ -12,7 +12,17 @@ use App\Domain\ValueObjects\GameValueObject;
 
 class GameService
 {
-    
+    public function findGameByID($id)
+    {
+        $game = Game::find($id);
+
+        if ($game) {
+            return response()->json($game);
+        } else {
+            return response()->json(['message' => 'Game not found'], 404);
+        }
+    }
+
     public function filterGamesByPrice($fromPrice)
     {
         $query = Game::query();

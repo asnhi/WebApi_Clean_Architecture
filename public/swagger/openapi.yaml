@@ -1,41 +1,58 @@
 openapi: 3.0.0
 info:
-  title: GameStore
+  title: 'My API'
   version: '1.0'
 paths:
-  /api/auth/register:
+  /api/register:
     post:
       tags:
         - Authentication
-      description: 'Đăng ký tài khoản mới'
-      operationId: 'App\Application\Controllers\AuthController::register'
+      summary: 'Đăng ký'
+      description: 'Đăng ký tài khoản'
+      operationId: register
       requestBody:
-        description: 'Dữ liệu tài khoản cần đăng ký'
+        description: 'Nhập thông tin đăng ký tài khoản'
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserRequest'
+              required:
+                - name
+                - email
+                - password
+                - password_confirmation
+              properties:
+                name:
+                  description: 'User Name'
+                  type: string
+                  example: 'Anh Nhi'
+                email:
+                  description: 'User Email'
+                  type: string
+                  example: nhi@gmail.com
+                password:
+                  description: 'User password'
+                  type: string
+                  example: '123456'
+                password_confirmation:
+                  description: 'User confirm password'
+                  type: string
+                  example: '123456'
+              type: object
       responses:
-        '201':
-          description: 'Tài khoản đã được đăng ký thành công'
-          content:
-            application/json:
-              schema:
-                properties:
-                  message: { description: 'Thông báo đăng ký thành công', type: string }
-                  user: { $ref: '#/components/schemas/User' }
-                type: object
-        '422':
+        '200':
+          description: 'Đăng ký tài khoản thành công'
+        '400':
           description: 'Dữ liệu không hợp lệ'
-  /api/auth/login:
+  /api/login:
     post:
       tags:
         - Authentication
-      description: 'Đăng nhập vào tài khoản'
-      operationId: 'App\Application\Controllers\AuthController::login'
+      summary: 'Đăng nhập'
+      description: 'Đăng nhập vào cửa hàng'
+      operationId: login
       requestBody:
-        description: 'Dữ liệu đăng nhập'
+        description: 'Nhập thông tin đăng nhập'
         required: true
         content:
           application/json:
@@ -47,64 +64,165 @@ paths:
                 email:
                   description: 'Địa chỉ email của người dùng'
                   type: string
-                  format: email
                 password:
                   description: 'Mật khẩu của người dùng'
                   type: string
-                  format: password
               type: object
       responses:
         '200':
           description: 'Đăng nhập thành công'
-          content:
-            application/json:
-              schema:
-                properties:
-                  access_token: { description: 'JWT token cho việc xác thực', type: string }
-                  token_type: { description: 'Loại token', type: string }
-                  expires_in: { description: 'Thời gian sống của token (tính bằng giây)', type: integer }
-                  user: { $ref: '#/components/schemas/User' }
-                type: object
-        '401':
-          description: 'Email hoặc mật khẩu không đúng'
-  /api/auth/profile:
+        '400':
+          description: 'Dữ liệu không hợp lệ'
+  /api/profile:
     get:
       tags:
         - Authentication
-      description: 'Xem thông tin tài khoản của người dùng hiện tại'
-      operationId: 'App\Application\Controllers\AuthController::profile'
+      summary: 'Hồ sơ người dùng'
+      description: 'Hồ sơ người mua hàng (người dùng)'
+      operationId: show
       responses:
         '200':
-          description: 'Thông tin tài khoản'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
+          description: 'Hiển thị hồ sơ người dùng'
+        '401':
+          description: 'Không xác thực được người dùng'
       security:
         -
-          bearerAuth: []
-  /api/auth/logout:
+          bearer: []
+  /api/logout:
     post:
       tags:
         - Authentication
-      description: 'Đăng xuất tài khoản'
-      operationId: 'App\Application\Controllers\AuthController::logout'
+      summary: 'Đăng xuất'
+      description: 'Đăng xuất người dùng'
+      operationId: logout
       responses:
         '200':
           description: 'Đăng xuất thành công'
+        '401':
+          description: 'Không xác thực được người dùng'
+      security:
+        -
+          bearer: []
+  /api/cart/add:
+    post:
+      tags:
+        - Cart
+      summary: 'Thêm vào giỏ hàng'
+      description: 'Thêm sản phẩm vào giỏ hàng'
+      operationId: 'App\Application\Controllers\CartController::addToCart'
+      requestBody:
+        description: 'Trò chơi được thêm vào giỏ hàng'
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                id:
+                  description: 'ID của trò chơi'
+                  type: integer
+              type: object
+      responses:
+        '200':
+          description: 'Thêm vào giỏ hàng thành công'
+        '422':
+          description: 'Dữ liệu không hợp lệ'
+      security:
+        -
+          bearer: []
+  /api/cart/update:
+    put:
+      tags:
+        - Cart
+      summary: 'Cập nhật giỏ hàng với ID trò chơi'
+      description: 'Cập nhật sản phẩm trong giỏ hàng'
+      operationId: 'App\Application\Controllers\CartController::updateCart'
+      requestBody:
+        description: 'Thông tin cập nhật trò chơi trong giỏ hàng'
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                id:
+                  description: 'ID của trò chơi'
+                  type: integer
+                quantity:
+                  description: 'Số lượng'
+                  type: integer
+              type: object
+      responses:
+        '200':
+          description: 'Đã cập nhật số lượng'
+        '422':
+          description: 'Dữ liệu không hợp lệ'
+      security:
+        -
+          bearer: []
+  /api/cart:
+    get:
+      tags:
+        - Cart
+      summary: 'Hiển thị giỏ hàng'
+      description: 'Hiển thị giỏ hàng hiện tại'
+      operationId: 'App\Application\Controllers\CartController::showCart'
+      responses:
+        '200':
+          description: 'Thông tin giỏ hàng hiện tại'
           content:
             application/json:
               schema:
-                properties:
-                  message: { description: 'Thông báo đăng xuất thành công', type: string }
-                type: object
+                type: array
+                items:
+                  properties: { id: { description: 'ID của trò chơi', type: integer }, name: { description: 'Tên của trò chơi', type: string }, price: { description: Giá, type: number }, image: { description: 'Hình ảnh', type: string }, quantity: { description: 'Số lượng', type: integer }, total_price: { description: 'Tổng giá khi đã nhân với số lượng', type: number } }
+                  type: object
+        '422':
+          description: 'Dữ liệu không hợp lệ'
       security:
         -
-          bearerAuth: []
+          bearer: []
+  '/api/cart/remove/{productId}':
+    delete:
+      tags:
+        - Cart
+      summary: 'Xóa trò chơi khỏi giỏ hàng (Xóa hết & xóa theo ID)'
+      description: 'Xóa sản phẩm khỏi giỏ hàng'
+      operationId: 'App\Application\Controllers\CartController::removeFromCart'
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'ID của trò chơi cần xóa'
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'Trò chơi đã được xóa khỏi giỏ hàng'
+        '422':
+          description: 'Dữ liệu không hợp lệ'
+      security:
+        -
+          bearer: []
+  /api/cart/buy:
+    post:
+      tags:
+        - Cart
+      summary: 'Đặt hàng & thanh toán'
+      description: 'Thanh toán giỏ hàng'
+      operationId: 'App\Application\Controllers\CartController::payCart'
+      responses:
+        '200':
+          description: 'Giỏ hàng đã được thanh toán'
+        '422':
+          description: 'Dữ liệu không hợp lệ'
+      security:
+        -
+          bearer: []
   /api/game/search:
     get:
       tags:
         - Game
+      summary: 'Tìm kiếm (Theo tên thể loại và giá)'
       description: 'Tìm kiếm trò chơi theo từ khóa hoặc giá từ một mức giá cụ thể'
       parameters:
         -
@@ -133,10 +251,36 @@ paths:
                   $ref: '#/components/schemas/Game'
         '404':
           description: 'Không tìm thấy trò chơi nào'
+  '/api/game/detail/{id}':
+    get:
+      tags:
+        - Game
+      summary: 'Chi tiết trò chơi'
+      description: 'Hiển thị thông tin chi tiết của một trò chơi'
+      operationId: 'App\Application\Controllers\GameController::showGameByID'
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'ID của trò chơi'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: 'Thông tin chi tiết của trò chơi'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Game'
+        '404':
+          description: 'Không tìm thấy trò chơi'
   /api/game/favorate:
     get:
       tags:
         - Game
+      summary: 'Được yêu thích nhất'
       description: 'Trả về top 5 các game được yêu thích'
       operationId: 'App\Application\Controllers\GameController::showFavorate'
       responses:
@@ -148,6 +292,7 @@ paths:
     post:
       tags:
         - Game
+      summary: 'Tạo trò chơi'
       description: 'Tạo mới một trò chơi'
       operationId: 'App\Application\Controllers\GameController::createGame'
       requestBody:
@@ -164,15 +309,19 @@ paths:
             application/json:
               schema:
                 properties:
-                  message: { description: 'Thông báo thành công', type: string }
+                  message: { description: 'Tạo thành công', type: string }
                   data: { $ref: '#/components/schemas/Game' }
                 type: object
         '422':
           description: 'Dữ liệu không hợp lệ'
+      security:
+        -
+          bearer: []
   '/api/game/{id}':
     delete:
       tags:
         - Game
+      summary: 'Xóa trò chơi'
       description: 'Xóa một trò chơi'
       operationId: 'App\Application\Controllers\GameController::deleteGame'
       parameters:
@@ -195,10 +344,14 @@ paths:
                 type: object
         '404':
           description: 'Không tìm thấy trò chơi với ID đã cung cấp'
+      security:
+        -
+          bearer: []
   /api/genre:
     get:
       tags:
         - Genre
+      summary: 'Hiển thị toàn bộ thể loại'
       description: 'Hiển thị tất cả các thể loại trò chơi'
       operationId: 'App\Application\Controllers\GenreController::showAllGenre'
       responses:
@@ -215,7 +368,8 @@ paths:
     post:
       tags:
         - Genre
-      description: 'Tạo mới một thể loại game'
+      summary: 'Tạo mới thể loại trò chơi'
+      description: 'Tạo mới một thể loại trò chơi'
       operationId: 'App\Application\Controllers\GenreController::createGenre'
       requestBody:
         description: 'Dữ liệu thể loại cần tạo'
@@ -227,25 +381,29 @@ paths:
                 - name
               properties:
                 name:
-                  description: 'Tên của thể loại game'
+                  description: 'Tên của thể loại trò chơi'
                   type: string
               type: object
       responses:
         '200':
-          description: 'Thể loại game đã được tạo thành công'
+          description: 'Thể loại trò chơi đã được tạo thành công'
           content:
             application/json:
               schema:
                 properties:
-                  message: { description: 'Thông báo thành công', type: string }
+                  message: { description: 'Tạo thành công', type: string }
                   data: { $ref: '#/components/schemas/Genre' }
                 type: object
         '422':
           description: 'Dữ liệu không hợp lệ'
+      security:
+        -
+          bearer: []
   '/api/genre/detail/{id}':
     get:
       tags:
         - Genre
+      summary: 'Hiển thị thể loại theo trò chơi'
       description: 'Hiển thị thể loại của trò chơi với ID được cung cấp'
       operationId: 'App\Application\Controllers\GenreController::showGenreOfGameID'
       parameters:
@@ -270,6 +428,7 @@ paths:
     delete:
       tags:
         - Genre
+      summary: 'Xóa thể loại'
       description: 'Xóa thể loại trò chơi'
       operationId: 'App\Application\Controllers\GenreController::deleteGenre'
       parameters:
@@ -292,6 +451,9 @@ paths:
                 type: object
         '404':
           description: 'Không tìm thấy thể loại với ID đã cung cấp'
+      security:
+        -
+          bearer: []
   '/api/order/{id}':
     get:
       tags:
@@ -318,46 +480,11 @@ paths:
                   $ref: '#/components/schemas/Order'
         '404':
           description: 'Không tìm thấy đơn hàng nào cho người dùng đã cung cấp'
+      security:
+        -
+          bearer: []
 components:
   schemas:
-    UserRequest:
-      required:
-        - email
-        - password
-      properties:
-        email:
-          description: 'Địa chỉ email của người dùng'
-          type: string
-          format: email
-        password:
-          description: 'Mật khẩu của người dùng'
-          type: string
-          format: password
-      type: object
-    User:
-      required:
-        - id
-        - email
-        - created_at
-        - updated_at
-      properties:
-        id:
-          description: 'ID của người dùng'
-          type: integer
-          format: int64
-        email:
-          description: 'Địa chỉ email của người dùng'
-          type: string
-          format: email
-        created_at:
-          description: 'Thời điểm tạo tài khoản'
-          type: string
-          format: date-time
-        updated_at:
-          description: 'Thời điểm cập nhật tài khoản'
-          type: string
-          format: date-time
-      type: object
     Game:
       required:
         - id
@@ -487,3 +614,9 @@ components:
           type: string
           format: date-time
       type: object
+  securitySchemes:
+    bearer:
+      type: apiKey
+      description: 'Enter token in format (Bearer <token>)'
+      name: Authorization
+      in: header

@@ -11,11 +11,16 @@ class OrderDetail extends Model
 {
     use HasFactory;
 
-    public $timestamps = false;
+    public $timestamps = true;
     protected $fillable = [
-        'order_id', 'game_id', 'quantity', 'price',
+        'order_id', 'game_id', 'quantity', 'price', 'cd_key'
     ];
 
     protected $table = 'order_details';
+
+    public function user()
+    {
+        return $this->belongsTo(Order::class, 'order_id');
+    }
 
 }

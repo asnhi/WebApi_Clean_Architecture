@@ -29,9 +29,20 @@ class GenreController extends Controller
     }
 
 /**
+ * @OA\SecurityScheme(
+ *     securityScheme="bearer",
+ *     type="apiKey",
+ *     name="Authorization",
+ *     in="header",
+ *     description="Enter token in format (Bearer <token>)"
+ * )
+ */
+
+/**
  * @OA\Get(
  *     path="/api/genre",
  *     tags={"Genre"},
+ *     summary="Hiển thị toàn bộ thể loại",
  *     description="Hiển thị tất cả các thể loại trò chơi",
  *     @OA\Response(
  *         response=200,
@@ -57,6 +68,7 @@ class GenreController extends Controller
  * @OA\Get(
  *     path="/api/genre/detail/{id}",
  *     tags={"Genre"},
+ *     summary="Hiển thị thể loại theo trò chơi",
  *     description="Hiển thị thể loại của trò chơi với ID được cung cấp",
  *     @OA\Parameter(
  *         name="id",
@@ -93,7 +105,9 @@ class GenreController extends Controller
  * @OA\Post(
  *     path="/api/genre",
  *     tags={"Genre"},
- *     description="Tạo mới một thể loại game",
+ *     summary="Tạo mới thể loại trò chơi",
+ *     description="Tạo mới một thể loại trò chơi",
+ *     security={{"bearer":{}}},
  *     @OA\RequestBody(
  *         required=true,
  *         description="Dữ liệu thể loại cần tạo",
@@ -102,19 +116,19 @@ class GenreController extends Controller
  *             @OA\Property(
  *                 property="name",
  *                 type="string",
- *                 description="Tên của thể loại game"
+ *                 description="Tên của thể loại trò chơi"
  *             )
  *         )
  *     ),
  *     @OA\Response(
  *         response=200,
- *         description="Thể loại game đã được tạo thành công",
+ *         description="Thể loại trò chơi đã được tạo thành công",
  *         @OA\JsonContent(
  *             type="object",
  *             @OA\Property(
  *                 property="message",
  *                 type="string",
- *                 description="Thông báo thành công"
+ *                 description="Tạo thành công"
  *             ),
  *             @OA\Property(
  *                 property="data",
@@ -151,7 +165,9 @@ class GenreController extends Controller
  * @OA\Delete(
  *     path="/api/genre/{id}",
  *     tags={"Genre"},
+ *     summary="Xóa thể loại",
  *     description="Xóa thể loại trò chơi",
+ *     security={{"bearer":{}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",

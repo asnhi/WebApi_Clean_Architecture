@@ -6,7 +6,7 @@ namespace App\Application\Actions\Cart;
 use App\Application\Service\CartService;
 use Illuminate\Http\Request;
 
-class RemoveCart
+class CreateCart
 {
     protected $builder;
 
@@ -15,8 +15,9 @@ class RemoveCart
         $this->builder = $builder;
     }
 
-    public function execute(Request $request, $productId = null)
+    public function execute(Request $request)
     {
-        return $this->builder->removeFromCart($request, $productId);
+        return $this->builder->payCart($request);
     }
 }
+

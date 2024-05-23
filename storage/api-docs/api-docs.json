@@ -5,59 +5,73 @@
         "version": "1.0"
     },
     "paths": {
-        "/api/auth/register": {
+        "/api/register": {
             "post": {
                 "tags": [
                     "Authentication"
                 ],
-                "description": "Đăng ký tài khoản mới",
-                "operationId": "App\\Application\\Controllers\\AuthController::register",
+                "summary": "Đăng ký",
+                "description": "Đăng ký tài khoản",
+                "operationId": "register",
                 "requestBody": {
-                    "description": "Dữ liệu tài khoản cần đăng ký",
+                    "description": "Nhập thông tin đăng ký tài khoản",
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/UserRequest"
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password",
+                                    "password_confirmation"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "User Name",
+                                        "type": "string",
+                                        "example": "Anh Nhi"
+                                    },
+                                    "email": {
+                                        "description": "User Email",
+                                        "type": "string",
+                                        "example": "nhi@gmail.com"
+                                    },
+                                    "password": {
+                                        "description": "User password",
+                                        "type": "string",
+                                        "example": "123456"
+                                    },
+                                    "password_confirmation": {
+                                        "description": "User confirm password",
+                                        "type": "string",
+                                        "example": "123456"
+                                    }
+                                },
+                                "type": "object"
                             }
                         }
                     }
                 },
                 "responses": {
-                    "201": {
-                        "description": "Tài khoản đã được đăng ký thành công",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "description": "Thông báo đăng ký thành công",
-                                            "type": "string"
-                                        },
-                                        "user": {
-                                            "$ref": "#/components/schemas/User"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                    "200": {
+                        "description": "Đăng ký tài khoản thành công"
                     },
-                    "422": {
+                    "400": {
                         "description": "Dữ liệu không hợp lệ"
                     }
                 }
             }
         },
-        "/api/auth/login": {
+        "/api/login": {
             "post": {
                 "tags": [
                     "Authentication"
                 ],
-                "description": "Đăng nhập vào tài khoản",
-                "operationId": "App\\Application\\Controllers\\AuthController::login",
+                "summary": "Đăng nhập",
+                "description": "Đăng nhập vào cửa hàng",
+                "operationId": "login",
                 "requestBody": {
-                    "description": "Dữ liệu đăng nhập",
+                    "description": "Nhập thông tin đăng nhập",
                     "required": true,
                     "content": {
                         "application/json": {
@@ -69,13 +83,11 @@
                                 "properties": {
                                     "email": {
                                         "description": "Địa chỉ email của người dùng",
-                                        "type": "string",
-                                        "format": "email"
+                                        "type": "string"
                                     },
                                     "password": {
                                         "description": "Mật khẩu của người dùng",
-                                        "type": "string",
-                                        "format": "password"
+                                        "type": "string"
                                     }
                                 },
                                 "type": "object"
@@ -85,92 +97,56 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Đăng nhập thành công",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "access_token": {
-                                            "description": "JWT token cho việc xác thực",
-                                            "type": "string"
-                                        },
-                                        "token_type": {
-                                            "description": "Loại token",
-                                            "type": "string"
-                                        },
-                                        "expires_in": {
-                                            "description": "Thời gian sống của token (tính bằng giây)",
-                                            "type": "integer"
-                                        },
-                                        "user": {
-                                            "$ref": "#/components/schemas/User"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Đăng nhập thành công"
                     },
-                    "401": {
-                        "description": "Email hoặc mật khẩu không đúng"
+                    "400": {
+                        "description": "Dữ liệu không hợp lệ"
                     }
                 }
             }
         },
-        "/api/auth/profile": {
+        "/api/profile": {
             "get": {
                 "tags": [
                     "Authentication"
                 ],
-                "description": "Xem thông tin tài khoản của người dùng hiện tại",
-                "operationId": "App\\Application\\Controllers\\AuthController::profile",
+                "summary": "Hồ sơ người dùng",
+                "description": "Hồ sơ người mua hàng (người dùng)",
+                "operationId": "show",
                 "responses": {
                     "200": {
-                        "description": "Thông tin tài khoản",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/User"
-                                }
-                            }
-                        }
+                        "description": "Hiển thị hồ sơ người dùng"
+                    },
+                    "401": {
+                        "description": "Không xác thực được người dùng"
                     }
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "bearer": []
                     }
                 ]
             }
         },
-        "/api/auth/logout": {
+        "/api/logout": {
             "post": {
                 "tags": [
                     "Authentication"
                 ],
-                "description": "Đăng xuất tài khoản",
-                "operationId": "App\\Application\\Controllers\\AuthController::logout",
+                "summary": "Đăng xuất",
+                "description": "Đăng xuất người dùng",
+                "operationId": "logout",
                 "responses": {
                     "200": {
-                        "description": "Đăng xuất thành công",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "description": "Thông báo đăng xuất thành công",
-                                            "type": "string"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Đăng xuất thành công"
+                    },
+                    "401": {
+                        "description": "Không xác thực được người dùng"
                     }
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "bearer": []
                     }
                 ]
             }
@@ -523,56 +499,6 @@
     },
     "components": {
         "schemas": {
-            "UserRequest": {
-                "required": [
-                    "email",
-                    "password"
-                ],
-                "properties": {
-                    "email": {
-                        "description": "Địa chỉ email của người dùng",
-                        "type": "string",
-                        "format": "email"
-                    },
-                    "password": {
-                        "description": "Mật khẩu của người dùng",
-                        "type": "string",
-                        "format": "password"
-                    }
-                },
-                "type": "object"
-            },
-            "User": {
-                "required": [
-                    "id",
-                    "email",
-                    "created_at",
-                    "updated_at"
-                ],
-                "properties": {
-                    "id": {
-                        "description": "ID của người dùng",
-                        "type": "integer",
-                        "format": "int64"
-                    },
-                    "email": {
-                        "description": "Địa chỉ email của người dùng",
-                        "type": "string",
-                        "format": "email"
-                    },
-                    "created_at": {
-                        "description": "Thời điểm tạo tài khoản",
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "updated_at": {
-                        "description": "Thời điểm cập nhật tài khoản",
-                        "type": "string",
-                        "format": "date-time"
-                    }
-                },
-                "type": "object"
-            },
             "Game": {
                 "required": [
                     "id",
@@ -739,6 +665,14 @@
                     }
                 },
                 "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "bearer": {
+                "type": "apiKey",
+                "description": "Enter token in format (Bearer <token>)",
+                "name": "Authorization",
+                "in": "header"
             }
         }
     }

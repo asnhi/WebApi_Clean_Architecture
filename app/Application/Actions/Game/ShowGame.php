@@ -33,6 +33,14 @@ class ShowGame
     //     return response()->json($game);
     // }
 
+    public function findGame(int $id)
+    {
+        $game = $this->builder->findGameByID($id);
+
+        return response()->json($game);
+    }
+
+
     public function showResultSearch(string $keyword)
     {
         // Thực hiện tìm kiếm game với keyword

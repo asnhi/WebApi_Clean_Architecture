@@ -28,12 +28,23 @@ class OrderController extends Controller
         $this->orderService = $orderService;
     }
 
-    /**
+/**
+ * @OA\SecurityScheme(
+ *     securityScheme="bearer",
+ *     type="apiKey",
+ *     name="Authorization",
+ *     in="header",
+ *     description="Enter token in format (Bearer <token>)"
+ * )
+ */
+
+/**
  * @OA\Get(
  *     path="/api/order/{id}",
  *     tags={"Order"},
  *     summary="Hiển thị tất cả các đơn hàng của người dùng có ID",
  *     description="Trả về tất cả các đơn hàng của người dùng có ID được cung cấp.",
+ *     security={{"bearer":{}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="query",

@@ -8,7 +8,7 @@ use App\Application\Controllers\GameController;
 
 
 Route::prefix('game')->group(function () {
-    // Route::get('', [GameController::class, 'handle']);
+
     Route::get('/detail/{id}', [GameController::class, 'showGameByID']);
     Route::get('favorate', [GameController::class, 'showFavorate']);
     Route::get('search', [GameController::class, 'showSearch']);

@@ -3,11 +3,29 @@ declare(strict_types=1);
 namespace App\Application\Service;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use App\Domain\Entities\Game;
+use App\Domain\Entities\Key;
+use Carbon\Carbon;
+
+use Illuminate\Support\Str;
+use App\Domain\ValueObjects\OrderDetailValueObject;
+use App\Domain\ValueObjects\OrderValueObject;
+
 
 class CartService
 {
+
+    protected $orderService;
+    protected $orderDetailService;
+
+    public function __construct(OrderService $orderService, OrderDetailService $orderDetailService)
+    {
+        $this->orderService = $orderService;
+        $this->orderDetailService = $orderDetailService;
+    }
+
     protected function getCart()
     {
         $userId = auth()->id();
@@ -19,6 +37,12 @@ class CartService
         $cartKey = 'cart:' . auth()->id();
         Cache::put($cartKey, $cart);
     }
+    protected function removeCartInCache()
+    {
+        $cartKey = 'cart:' . auth()->id();
+        Cache::forget($cartKey);
+    }
+
     public function addToCart(Request $request)
     {
         // Xử lý logic thêm sản phẩm vào giỏ hàng
@@ -104,7 +128,6 @@ class CartService
 
     public function showCart()
     {
-        // Xử lý logic hiển thị giỏ hàng
         try {
             // Lấy thông tin giỏ hàng từ cache
             $cart = $this->getCart();
@@ -120,31 +143,184 @@ class CartService
         }
     }
 
-    public function removeCartByIDGame(int $id)
+    public function removeFromCart(Request $request, $productId = null)
     {
-        // Lấy thông tin giỏ hàng từ cache
+        // Lấy giỏ hàng từ cache
         $cart = $this->getCart();
-    
-        // Kiểm tra xem sản phẩm có tồn tại trong giỏ hàng không
-        if (isset($cart[$id])) {
-            unset($cart[$id]);
-            // Lưu thông tin giỏ hàng vào cache sau khi xóa
-            $this->saveCartInCache($cart);
-            // Trả về phản hồi JSON thành công
+
+        // Kiểm tra xem giỏ hàng có trống không
+        if (empty($cart)) {
             return response()->json([
-                'success' => true, 
-                'message' => 'Xóa sản phẩm thành công',
-                'cart' => $cart
-            ]);
+                'success' => false,
+                'message' => 'Giỏ hàng đã trống'
+            ], 404);
+        }
+
+        if ($productId) {
+            // Xóa sản phẩm cụ thể khỏi giỏ hàng
+            if (isset($cart[$productId])) {
+                unset($cart[$productId]);
+                $this->saveCartInCache($cart);
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Xóa sản phẩm khỏi giỏ hàng thành công'
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Sản phẩm không tồn tại trong giỏ hàng'
+                ], 404);
+            }
         } else {
-            // Trả về phản hồi JSON nếu sản phẩm không tồn tại trong giỏ hàng
+            // Xóa toàn bộ giỏ hàng
+            $this->removeCartInCache();
+
             return response()->json([
-                'success' => false, 
-                'message' => 'Sản phẩm không tồn tại trong giỏ hàng'
+                'success' => true,
+                'message' => 'Xóa giỏ hàng thành công'
             ]);
         }
     }
-    
 
 
+    // public function payCart(Request $request)
+    // {
+    //     $cart = $this->getCart();
+
+    //     $vnp_TxnRef = Str::upper(Str::random(8));
+        
+    //     foreach ($cart as $key => $value) {
+    //         $keys[] = $key;
+    //         $quantity[] = $cart[$key]['quantity'];
+    //     }
+    //     $newCart = array_combine($keys, $quantity);
+    //     // Get order info from the redirect URL after a successful pay
+    //     $orderInfo = $request->newCart();
+    //     $orderTotal = $request->get('total');
+    //     $orderIdRef = $request->vnp_TxnRef;
+    //     $payType = Order::PAY_TYPE[0];
+    //     $status = Order::ORDER_STATUS[2];
+
+        
+
+    //     // Insert then get the newly added order id
+    //     // The order stay at Pending status until user got email
+    //     $orderId = Order::insertGetId(
+    //             [
+    //                 'user_id' => auth()->id(),
+    //                 'total' => $orderTotal,
+    //                 'order_status' => $status,
+    //                 'pay_type' => $payType,
+    //                 'order_id_ref' => $orderIdRef,
+    //             ]
+    //         );
+
+    //     $ids = array();
+    //     // Map every value and insert to the order detail
+    //     collect($orderInfo)->map(function ($value, $key) use ($orderId, &$ids) {
+    //         $ids[] = ["game_id" => $key, "quantity" => $value];
+    //         $game = Game::find($key);
+    //         DB::table('order_details')
+    //             ->insert(
+    //                 [
+    //                     'order_id' => $orderId,
+    //                     'game_id' => $game->id,
+    //                     'name' => $game->name,
+    //                     'price' => $game->price,
+    //                     'quantity' => $value
+    //                 ]
+    //             );
+    //     });
+
+    //     // Clear the cart
+    //     session()->put('cart', null);
+    //     return redirect()->route('cart')
+    //         ->with(
+    //             'order_success',
+    //             [
+    //                 "Thanh toán thành công! Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi \n",
+    //             ]
+    //         );
+    // }
+
+
+    public function payCart(Request $request)
+    {
+        // Lấy thông tin người dùng đang đăng nhập
+        $user = Auth::user();
+
+        // Lấy thông tin giỏ hàng từ session
+        $cart = $this->getCart();
+
+        // Kiểm tra giỏ hàng có sản phẩm không
+        if (empty($cart)) {
+            return response()->json(['error' => 'Giỏ hàng của bạn đang trống.'], 400);
+        }
+
+        $currentTime = Carbon::now();
+
+        // Tạo đơn hàng mới
+        $orderValueObject = new OrderValueObject([
+            'user_id' => $user->id,
+            'total' => 0, // Sẽ cập nhật sau khi tính tổng giá trị đơn hàng
+            'order_status' => 'Pending',
+            'pay_type' => 'VNPAY',
+            'order_id_ref' => Str::upper(Str::random(8)), // Mã đơn hàng tham chiếu
+            'created_at' => $currentTime,
+            'updated_at' => $currentTime,
+        ]);
+
+        // Tạo đơn hàng
+        $order = $this->orderService->createOrder($orderValueObject);
+
+        $totalPrice = 0;
+
+        // Lưu thông tin chi tiết đơn hàng (order_details) và tính tổng giá trị đơn hàng
+        foreach ($cart as $productId => $productData) {
+            $product = Game::find($productId);
+            if ($product) {
+                $orderDetailValueObject = new OrderDetailValueObject([
+                    'order_id' => $order->id,
+                    'game_id' => $product->id,
+                    'quantity' => $productData['quantity'],
+                    'price' => $product->price,
+                    'created_at' => $currentTime,
+                    'updated_at' => $currentTime,
+                    
+                ]);
+
+                // Tạo chi tiết đơn hàng
+                $this->orderDetailService->createOrderDetail($orderDetailValueObject);
+
+                // Tính tổng giá trị đơn hàng
+                $totalPrice += $product->price * $productData['quantity'];
+
+                // Giảm số lượng key trong cơ sở dữ liệu
+                // Sử dụng phương thức availableKeys() để lấy số lượng keys có sẵn
+                $keysToReduce = min($productData['quantity'], $product->availableKeys());
+
+                for ($i = 0; $i < $keysToReduce; $i++) {
+                    $key = Key::where('game_id', $product->id)
+                                ->where('is_expired', 0)
+                                ->where('is_redeemed', 0)
+                                ->first();
+                    if ($key) {
+                        $key->is_redeemed = 1;
+                        $key->updated_at = $currentTime;
+                        $key->save();
+                    }
+                }
+            }
+        }
+
+        // Cập nhật tổng giá trị đơn hàng
+        $order->total = $totalPrice;
+        $order->save();
+
+        // Xóa giỏ hàng sau khi đã đặt hàng thành công
+        $this->removeCartInCache();
+
+        return response()->json(['message' => 'Đơn hàng của bạn đã được đặt thành công.'], 200);
+    }
 }

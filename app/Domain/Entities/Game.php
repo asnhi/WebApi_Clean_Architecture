@@ -32,6 +32,11 @@ class Game extends Model
     {
         return $this->hasMany(Key::class);
     }
+
+    public function availableKeys()
+    {
+        return $this->keys()->where('is_expired', 0)->where('is_redeemed', 0)->count();
+    }
     protected static function boot()
 {
     parent::boot();

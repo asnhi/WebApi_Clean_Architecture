@@ -37,9 +37,20 @@ class GameController extends Controller
     // }
     
 /**
+ * @OA\SecurityScheme(
+ *     securityScheme="bearer",
+ *     type="apiKey",
+ *     name="Authorization",
+ *     in="header",
+ *     description="Enter token in format (Bearer <token>)"
+ * )
+ */
+
+/**
  * @OA\Get(
  *     path="/api/game/search",
  *     tags={"Game"},
+ *     summary="Tìm kiếm (Theo tên thể loại và giá)",
  *     description="Tìm kiếm trò chơi theo từ khóa hoặc giá từ một mức giá cụ thể",
  *     @OA\Parameter(
  *         name="keyword",
@@ -147,11 +158,43 @@ class GameController extends Controller
         }
     }
     
+    /**
+     * @OA\Get(
+     *     path="/api/game/detail/{id}",
+     *     tags={"Game"},
+     *     summary="Chi tiết trò chơi",
+     *     description="Hiển thị thông tin chi tiết của một trò chơi",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID của trò chơi",
+     *         @OA\Schema(
+     *             type="integer",
+     *             format="int64"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Thông tin chi tiết của trò chơi",
+     *         @OA\JsonContent(ref="#/components/schemas/Game")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Không tìm thấy trò chơi"
+     *     )
+     * )
+     */
+    public function showGameByID(Request $request)
+    {
+        return $this->showGame->findGame((int) $request->id);
+    }
 
     /**
      * @OA\Get(
      *     path="/api/game/favorate",
      *     tags={"Game"},
+     *     summary="Được yêu thích nhất",
      *     description="Trả về top 5 các game được yêu thích",
      *     @OA\Response(
      *         response=200,
@@ -168,7 +211,6 @@ class GameController extends Controller
     {
         return $this->showGame->showFavorate();
     }
-
 
 /**
  * @OA\Schema(
@@ -217,7 +259,9 @@ class GameController extends Controller
  * @OA\Post(
  *     path="/api/game",
  *     tags={"Game"},
+ *     summary="Tạo trò chơi",
  *     description="Tạo mới một trò chơi",
+ *     security={{"bearer":{}}},
  *     @OA\RequestBody(
  *         required=true,
  *         description="Dữ liệu trò chơi cần tạo",
@@ -231,7 +275,7 @@ class GameController extends Controller
  *             @OA\Property(
  *                 property="message",
  *                 type="string",
- *                 description="Thông báo thành công"
+ *                 description="Tạo thành công"
  *             ),
  *             @OA\Property(
  *                 property="data",
@@ -257,7 +301,9 @@ class GameController extends Controller
  * @OA\Delete(
  *     path="/api/game/{id}",
  *     tags={"Game"},
+ *     summary="Xóa trò chơi",
  *     description="Xóa một trò chơi",
+ *     security={{"bearer":{}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
