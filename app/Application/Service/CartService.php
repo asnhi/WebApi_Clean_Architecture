@@ -184,99 +184,72 @@ class CartService
     }
 
 
-    // public function payCart(Request $request)
-    // {
-    //     $cart = $this->getCart();
-
-    //     $vnp_TxnRef = Str::upper(Str::random(8));
-        
-    //     foreach ($cart as $key => $value) {
-    //         $keys[] = $key;
-    //         $quantity[] = $cart[$key]['quantity'];
-    //     }
-    //     $newCart = array_combine($keys, $quantity);
-    //     // Get order info from the redirect URL after a successful pay
-    //     $orderInfo = $request->newCart();
-    //     $orderTotal = $request->get('total');
-    //     $orderIdRef = $request->vnp_TxnRef;
-    //     $payType = Order::PAY_TYPE[0];
-    //     $status = Order::ORDER_STATUS[2];
-
-        
-
-    //     // Insert then get the newly added order id
-    //     // The order stay at Pending status until user got email
-    //     $orderId = Order::insertGetId(
-    //             [
-    //                 'user_id' => auth()->id(),
-    //                 'total' => $orderTotal,
-    //                 'order_status' => $status,
-    //                 'pay_type' => $payType,
-    //                 'order_id_ref' => $orderIdRef,
-    //             ]
-    //         );
-
-    //     $ids = array();
-    //     // Map every value and insert to the order detail
-    //     collect($orderInfo)->map(function ($value, $key) use ($orderId, &$ids) {
-    //         $ids[] = ["game_id" => $key, "quantity" => $value];
-    //         $game = Game::find($key);
-    //         DB::table('order_details')
-    //             ->insert(
-    //                 [
-    //                     'order_id' => $orderId,
-    //                     'game_id' => $game->id,
-    //                     'name' => $game->name,
-    //                     'price' => $game->price,
-    //                     'quantity' => $value
-    //                 ]
-    //             );
-    //     });
-
-    //     // Clear the cart
-    //     session()->put('cart', null);
-    //     return redirect()->route('cart')
-    //         ->with(
-    //             'order_success',
-    //             [
-    //                 "Thanh toán thành công! Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi \n",
-    //             ]
-    //         );
-    // }
-
-
     public function payCart(Request $request)
     {
-        // Lấy thông tin người dùng đang đăng nhập
-        $user = Auth::user();
-
-        // Lấy thông tin giỏ hàng từ session
-        $cart = $this->getCart();
-
-        // Kiểm tra giỏ hàng có sản phẩm không
-        if (empty($cart)) {
-            return response()->json(['error' => 'Giỏ hàng của bạn đang trống.'], 400);
+        try {
+            // Lấy thông tin người dùng đang đăng nhập
+            $user = Auth::user();
+    
+            // Lấy thông tin giỏ hàng từ session
+            $cart = $this->getCart();
+    
+            // Kiểm tra giỏ hàng có sản phẩm không
+            if (empty($cart)) {
+                return response()->json(['error' => 'Giỏ hàng của bạn đang trống.'], 400);
+            }
+    
+            // Tạo đơn hàng mới
+            $order = $this->createOrder($user, $cart);
+    
+            // Xóa giỏ hàng sau khi đã đặt hàng thành công
+            $this->removeCartInCache();
+    
+            return response()->json(['message' => 'Đơn hàng của bạn đã được đặt thành công.'], 200);
+        } catch (\Exception $ex) {
+            return response()->json(['error' => 'Đã xảy ra lỗi khi đặt hàng.'], 500);
         }
-
+    }
+    
+    private function createOrder($user, $cart)
+    {
         $currentTime = Carbon::now();
-
+    
         // Tạo đơn hàng mới
         $orderValueObject = new OrderValueObject([
             'user_id' => $user->id,
-            'total' => 0, // Sẽ cập nhật sau khi tính tổng giá trị đơn hàng
+            'total' => $this->calculateTotalPrice($cart), // Tính tổng giá trị đơn hàng
             'order_status' => 'Pending',
             'pay_type' => 'VNPAY',
             'order_id_ref' => Str::upper(Str::random(8)), // Mã đơn hàng tham chiếu
             'created_at' => $currentTime,
             'updated_at' => $currentTime,
         ]);
-
+    
         // Tạo đơn hàng
         $order = $this->orderService->createOrder($orderValueObject);
-
+    
+        // Lưu thông tin chi tiết đơn hàng
+        $this->saveOrderDetails($order, $cart, $currentTime);
+    
+        return $order;
+    }
+    
+    private function calculateTotalPrice($cart)
+    {
         $totalPrice = 0;
-
-        // Lưu thông tin chi tiết đơn hàng (order_details) và tính tổng giá trị đơn hàng
+    
+        foreach ($cart as $productId => $productData) {
+            $product = Game::find($productId);
+            if ($product) {
+                $totalPrice += $product->price * $productData['quantity'];
+            }
+        }
+    
+        return $totalPrice;
+    }
+    
+    private function saveOrderDetails($order, $cart, $currentTime)
+    {
         foreach ($cart as $productId => $productData) {
             $product = Game::find($productId);
             if ($product) {
@@ -287,40 +260,110 @@ class CartService
                     'price' => $product->price,
                     'created_at' => $currentTime,
                     'updated_at' => $currentTime,
-                    
                 ]);
-
+    
                 // Tạo chi tiết đơn hàng
                 $this->orderDetailService->createOrderDetail($orderDetailValueObject);
-
-                // Tính tổng giá trị đơn hàng
-                $totalPrice += $product->price * $productData['quantity'];
-
+    
                 // Giảm số lượng key trong cơ sở dữ liệu
-                // Sử dụng phương thức availableKeys() để lấy số lượng keys có sẵn
-                $keysToReduce = min($productData['quantity'], $product->availableKeys());
-
-                for ($i = 0; $i < $keysToReduce; $i++) {
-                    $key = Key::where('game_id', $product->id)
-                                ->where('is_expired', 0)
-                                ->where('is_redeemed', 0)
-                                ->first();
-                    if ($key) {
-                        $key->is_redeemed = 1;
-                        $key->updated_at = $currentTime;
-                        $key->save();
-                    }
-                }
+                $this->reduceKeys($product, $productData['quantity'], $currentTime);
             }
         }
-
-        // Cập nhật tổng giá trị đơn hàng
-        $order->total = $totalPrice;
-        $order->save();
-
-        // Xóa giỏ hàng sau khi đã đặt hàng thành công
-        $this->removeCartInCache();
-
-        return response()->json(['message' => 'Đơn hàng của bạn đã được đặt thành công.'], 200);
     }
+    
+    private function reduceKeys($product, $quantity, $currentTime)
+    {
+        $keysToReduce = min($quantity, $product->availableKeys());
+    
+        for ($i = 0; $i < $keysToReduce; $i++) {
+            $key = Key::where('game_id', $product->id)
+                        ->where('is_expired', 0)
+                        ->where('is_redeemed', 0)
+                        ->first();
+            if ($key) {
+                $key->is_redeemed = 1;
+                $key->updated_at = $currentTime;
+                $key->save();
+            }
+        }
+    }
+    
+    // public function payCart(Request $request)
+    // {
+    //     // Lấy thông tin người dùng đang đăng nhập
+    //     $user = Auth::user();
+
+    //     // Lấy thông tin giỏ hàng từ session
+    //     $cart = $this->getCart();
+
+    //     // Kiểm tra giỏ hàng có sản phẩm không
+    //     if (empty($cart)) {
+    //         return response()->json(['error' => 'Giỏ hàng của bạn đang trống.'], 400);
+    //     }
+
+    //     $currentTime = Carbon::now();
+
+    //     // Tạo đơn hàng mới
+    //     $orderValueObject = new OrderValueObject([
+    //         'user_id' => $user->id,
+    //         'total' => 0, // Sẽ cập nhật sau khi tính tổng giá trị đơn hàng
+    //         'order_status' => 'Pending',
+    //         'pay_type' => 'VNPAY',
+    //         'order_id_ref' => Str::upper(Str::random(8)), // Mã đơn hàng tham chiếu
+    //         'created_at' => $currentTime,
+    //         'updated_at' => $currentTime,
+    //     ]);
+
+    //     // Tạo đơn hàng
+    //     $order = $this->orderService->createOrder($orderValueObject);
+
+    //     $totalPrice = 0;
+
+    //     // Lưu thông tin chi tiết đơn hàng (order_details) và tính tổng giá trị đơn hàng
+    //     foreach ($cart as $productId => $productData) {
+    //         $product = Game::find($productId);
+    //         if ($product) {
+    //             $orderDetailValueObject = new OrderDetailValueObject([
+    //                 'order_id' => $order->id,
+    //                 'game_id' => $product->id,
+    //                 'quantity' => $productData['quantity'],
+    //                 'price' => $product->price,
+    //                 'created_at' => $currentTime,
+    //                 'updated_at' => $currentTime,
+                    
+    //             ]);
+
+    //             // Tạo chi tiết đơn hàng
+    //             $this->orderDetailService->createOrderDetail($orderDetailValueObject);
+
+    //             // Tính tổng giá trị đơn hàng
+    //             $totalPrice += $product->price * $productData['quantity'];
+
+    //             // Giảm số lượng key trong cơ sở dữ liệu
+    //             // Sử dụng phương thức availableKeys() để lấy số lượng keys có sẵn
+    //             $keysToReduce = min($productData['quantity'], $product->availableKeys());
+
+    //             for ($i = 0; $i < $keysToReduce; $i++) {
+    //                 $key = Key::where('game_id', $product->id)
+    //                             ->where('is_expired', 0)
+    //                             ->where('is_redeemed', 0)
+    //                             ->first();
+    //                 if ($key) {
+    //                     $key->is_redeemed = 1;
+    //                     $key->updated_at = $currentTime;
+    //                     $key->save();
+    //                 }
+    //             }
+    //         }
+    //     }
+
+    //     // Cập nhật tổng giá trị đơn hàng
+    //     $order->total = $totalPrice;
+    //     $order->save();
+
+    //     // Xóa giỏ hàng sau khi đã đặt hàng thành công
+    //     $this->removeCartInCache();
+
+    //     return response()->json(['message' => 'Đơn hàng của bạn đã được đặt thành công.'], 200);
+    // }
 }
