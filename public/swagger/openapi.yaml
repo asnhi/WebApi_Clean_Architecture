@@ -454,21 +454,12 @@ paths:
       security:
         -
           bearer: []
-  '/api/order/{id}':
+  /api/order:
     get:
       tags:
         - Order
-      summary: 'Hiển thị tất cả các đơn hàng của người dùng có ID'
-      description: 'Trả về tất cả các đơn hàng của người dùng có ID được cung cấp.'
-      parameters:
-        -
-          name: id
-          in: query
-          description: 'ID của người dùng'
-          required: true
-          schema:
-            type: integer
-            format: int64
+      summary: 'Hiển thị tất cả các đơn hàng của người dùng'
+      description: 'Trả về tất cả các đơn hàng của người dùng'
       responses:
         '200':
           description: 'Danh sách đơn hàng của người dùng đó'
