@@ -40,21 +40,11 @@ class OrderController extends Controller
 
 /**
  * @OA\Get(
- *     path="/api/order/{id}",
+ *     path="/api/order",
  *     tags={"Order"},
- *     summary="Hiển thị tất cả các đơn hàng của người dùng có ID",
- *     description="Trả về tất cả các đơn hàng của người dùng có ID được cung cấp.",
+ *     summary="Hiển thị tất cả các đơn hàng của người dùng",
+ *     description="Trả về tất cả các đơn hàng của người dùng",
  *     security={{"bearer":{}}},
- *     @OA\Parameter(
- *         name="id",
- *         in="query",
- *         required=true,
- *         description="ID của người dùng",
- *         @OA\Schema(
- *             type="integer",
- *             format="int64"
- *         )
- *     ),
  *     @OA\Response(
  *         response=200,
  *         description="Danh sách đơn hàng của người dùng đó",
@@ -63,6 +53,7 @@ class OrderController extends Controller
  *             @OA\Items(ref="#/components/schemas/Order")
  *         )
  *     ),
+ * 
  *     @OA\Response(
  *         response=404,
  *         description="Không tìm thấy đơn hàng nào cho người dùng đã cung cấp"
